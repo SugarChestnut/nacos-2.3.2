@@ -104,6 +104,7 @@ public class ServiceController {
             @RequestParam(required = false, defaultValue = "0.0F") float protectThreshold,
             @RequestParam(defaultValue = StringUtils.EMPTY) String metadata,
             @RequestParam(defaultValue = StringUtils.EMPTY) String selector) throws Exception {
+        // 服务元数据信息
         ServiceMetadata serviceMetadata = new ServiceMetadata();
         serviceMetadata.setProtectThreshold(protectThreshold);
         serviceMetadata.setSelector(parseSelector(selector));

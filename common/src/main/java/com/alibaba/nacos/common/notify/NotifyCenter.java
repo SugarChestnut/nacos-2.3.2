@@ -294,7 +294,7 @@ public class NotifyCenter {
         if (ClassUtils.isAssignableFrom(SlowEvent.class, eventType)) {
             return INSTANCE.sharePublisher.publish(event);
         }
-        
+        // 根据事件类型选择不同的发布者
         final String topic = ClassUtils.getCanonicalName(eventType);
         
         EventPublisher publisher = INSTANCE.publisherMap.get(topic);

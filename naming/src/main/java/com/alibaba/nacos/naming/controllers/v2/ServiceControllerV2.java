@@ -87,6 +87,7 @@ public class ServiceControllerV2 {
     @Secured(action = ActionTypes.WRITE)
     public Result<String> create(ServiceForm serviceForm) throws Exception {
         serviceForm.validate();
+        // 元数据信息
         ServiceMetadata serviceMetadata = new ServiceMetadata();
         serviceMetadata.setProtectThreshold(serviceForm.getProtectThreshold());
         serviceMetadata.setSelector(parseSelector(serviceForm.getSelector()));
