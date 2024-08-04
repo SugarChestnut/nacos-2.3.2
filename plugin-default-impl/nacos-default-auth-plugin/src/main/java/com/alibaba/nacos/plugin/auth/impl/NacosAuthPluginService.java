@@ -64,7 +64,7 @@ public class NacosAuthPluginService implements AuthPluginService {
     
     @Override
     public boolean enableAuth(ActionTypes action, String type) {
-        // enable all of action and type
+        // enable all actions and types
         return true;
     }
     

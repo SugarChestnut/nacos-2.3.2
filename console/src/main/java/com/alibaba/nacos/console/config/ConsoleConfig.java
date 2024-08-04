@@ -55,7 +55,7 @@ public class ConsoleConfig {
      */
     @PostConstruct
     public void init() {
-        // 接口扫描
+        // 接口扫描，缓存 @RequestMapping 接口
         methodsCache.initClassMethod("com.alibaba.nacos.core.controller");
         methodsCache.initClassMethod("com.alibaba.nacos.naming.controllers");
         methodsCache.initClassMethod("com.alibaba.nacos.config.server.controller");

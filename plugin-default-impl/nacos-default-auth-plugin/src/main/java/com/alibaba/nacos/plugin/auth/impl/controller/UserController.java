@@ -233,7 +233,7 @@ public class UserController {
     @PostMapping("/login")
     public Object login(@RequestParam String username, @RequestParam String password, HttpServletResponse response,
             HttpServletRequest request) throws AccessException {
-        
+        // nacos.core.auth.system.type
         if (AuthSystemTypes.NACOS.name().equalsIgnoreCase(authConfigs.getNacosAuthSystemType())
                 || AuthSystemTypes.LDAP.name().equalsIgnoreCase(authConfigs.getNacosAuthSystemType())) {
             NacosUser user = iAuthenticationManager.authenticate(request);
@@ -251,7 +251,7 @@ public class UserController {
         // create Authentication class through username and password, the implement class is UsernamePasswordAuthenticationToken
         UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(username,
                 password);
-        
+        // 下面代码废弃掉了
         try {
             // use the method authenticate of AuthenticationManager(default implement is ProviderManager) to valid Authentication
             Authentication authentication = authenticationManager.authenticate(authenticationToken);
