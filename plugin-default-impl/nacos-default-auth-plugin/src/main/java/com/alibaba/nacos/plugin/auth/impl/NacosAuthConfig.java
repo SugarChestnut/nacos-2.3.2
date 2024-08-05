@@ -142,9 +142,13 @@ public class NacosAuthConfig {
             }
         };
     }
-    
+
+    /**
+     * 过滤器链
+     */
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+        // 默认不为空
         if (StringUtils.isBlank(authConfigs.getNacosAuthSystemType())) {
             http.csrf().disable().cors()// We don't need CSRF for JWT based authentication
                     .and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()

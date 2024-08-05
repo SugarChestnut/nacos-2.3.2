@@ -117,6 +117,7 @@ public class AuthFilter implements Filter {
                     chain.doFilter(request, response);
                     return;
                 }
+                // 资源解析
                 Resource resource = protocolAuthService.parseResource(req, secured);
                 // 从请求头和请求参数中，获取指定的认证信息，同时获取远程IP
                 IdentityContext identityContext = protocolAuthService.parseIdentity(req);
