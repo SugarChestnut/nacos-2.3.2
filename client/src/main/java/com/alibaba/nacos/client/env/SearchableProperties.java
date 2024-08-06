@@ -42,7 +42,8 @@ class SearchableProperties implements NacosClientProperties {
     private static final JvmArgsPropertySource JVM_ARGS_PROPERTY_SOURCE = new JvmArgsPropertySource();
     
     private static final SystemEnvPropertySource SYSTEM_ENV_PROPERTY_SOURCE = new SystemEnvPropertySource();
-    
+
+    // 资源排序方式
     private static final List<SourceType> SEARCH_ORDER;
     
     private static final CompositeConverter CONVERTER = new CompositeConverter();
@@ -83,9 +84,11 @@ class SearchableProperties implements NacosClientProperties {
     }
     
     static final SearchableProperties INSTANCE = new SearchableProperties();
-    
+
+    // 排序后的资源列表，包含 propertiesPropertySource
     private final List<AbstractPropertySource> propertySources;
-    
+
+    // 当前配置
     private final PropertiesPropertySource propertiesPropertySource;
     
     private SearchableProperties() {

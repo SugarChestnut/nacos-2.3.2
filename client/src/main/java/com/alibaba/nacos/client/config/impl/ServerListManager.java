@@ -219,17 +219,22 @@ public class ServerListManager implements Closeable {
     private String initServerName(NacosClientProperties properties) {
         String serverName;
         //1.user define server name.
+        // 在 springCloud 中配置这个配置选项
         if (properties != null && properties.containsKey(PropertyKeyConst.SERVER_NAME)) {
             serverName = properties.getProperty(PropertyKeyConst.SERVER_NAME);
         } else {
             // if fix url, use fix url join string.
             if (isFixed) {
+                // 直接配置了配置中心地址
+                // fixed-${namespace}-127.0.0.1_8848-127.0.0.2:8848
                 serverName = FIXED_NAME + "-" + (StringUtils.isNotBlank(namespace) ? (StringUtils.trim(namespace) + "-")
                         : "") + getFixedNameSuffix(serverUrls.toArray(new String[0]));
             } else {
                 //if use endpoint, use endpoint, content path, serverList name
+                //
                 String contextPathTmp =
                         StringUtils.isNotBlank(this.endpointContextPath) ? this.endpointContextPath : this.contentPath;
+                // custom-127.0.0.1_8948_nacos
                 serverName =
                         CUSTOM_NAME + "-" + String.join("_", endpoint, String.valueOf(endpointPort), contextPathTmp,
                                 serverListName) + (StringUtils.isNotBlank(namespace) ? ("_" + StringUtils.trim(
@@ -248,7 +253,7 @@ public class ServerListManager implements Closeable {
         String contextPathTem = StringUtils.isNotBlank(this.endpointContextPath) ? ContextPathUtil.normalizeContextPath(
                 this.endpointContextPath) : ContextPathUtil.normalizeContextPath(this.contentPath);
         StringBuilder addressServerUrlTem = new StringBuilder(
-                String.format("http://%s:%d%s/%s", this.endpoint, this.endpointPort, contextPathTem,
+                String.format("http://%s:%d/%s/%s", this.endpoint, this.endpointPort, contextPathTem,
                         this.serverListName));
         boolean hasQueryString = false;
         if (StringUtils.isNotBlank(namespace)) {
@@ -334,6 +339,7 @@ public class ServerListManager implements Closeable {
         }
         
         GetServerListTask getServersTask = new GetServerListTask(addressServerUrl);
+        // 配置了 endpoint, 没有配置 serverAddrsStr, 从远程获取地址列表
         for (int i = 0; i < initServerListRetryTimes && serverUrls.isEmpty(); ++i) {
             getServersTask.run();
             if (!serverUrls.isEmpty()) {

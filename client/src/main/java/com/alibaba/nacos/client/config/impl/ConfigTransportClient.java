@@ -68,7 +68,7 @@ public abstract class ConfigTransportClient {
     }
     
     public ConfigTransportClient(NacosClientProperties properties, ServerListManager serverListManager) {
-        
+        // 编码
         String encodeTmp = properties.getProperty(PropertyKeyConst.ENCODE);
         if (StringUtils.isBlank(encodeTmp)) {
             this.encode = Constants.ENCODE;

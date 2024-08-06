@@ -22,9 +22,11 @@ import java.util.ListIterator;
 import java.util.Properties;
 
 class PropertiesPropertySource extends AbstractPropertySource {
-    
+
+    // 当前配置
     private final Properties properties = new Properties();
-    
+
+    // 父配置
     private final PropertiesPropertySource parent;
     
     PropertiesPropertySource() {

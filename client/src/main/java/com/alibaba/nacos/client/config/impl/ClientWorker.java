@@ -480,7 +480,7 @@ public class ClientWorker implements Closeable {
     public ClientWorker(final ConfigFilterChainManager configFilterChainManager, ServerListManager serverListManager,
             final NacosClientProperties properties) throws NacosException {
         this.configFilterChainManager = configFilterChainManager;
-        
+        // 初始化参数
         init(properties);
         
         agent = new ConfigRpcTransportClient(properties, serverListManager);
@@ -488,7 +488,6 @@ public class ClientWorker implements Closeable {
                 new NameThreadFactory("com.alibaba.nacos.client.Worker"));
         agent.setExecutor(executorService);
         agent.start();
-        
     }
     
     void initAppLabels(Properties properties) {
