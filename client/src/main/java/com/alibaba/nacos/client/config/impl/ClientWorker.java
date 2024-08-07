@@ -806,7 +806,7 @@ public class ClientWorker implements Closeable {
             Map<String, List<CacheData>> listenCachesMap = new HashMap<>(16);
             Map<String, List<CacheData>> removeListenCachesMap = new HashMap<>(16);
             long now = System.currentTimeMillis();
-            // 180s
+            // 超过180s
             boolean needAllSync = now - lastAllSyncTime >= ALL_SYNC_INTERNAL;
             for (CacheData cache : cacheMap.get().values()) {
                 
@@ -824,10 +824,11 @@ public class ClientWorker implements Closeable {
                     }
                     
                     // If local configuration information is used, then skip the processing directly.
+                    // 是否在使用本地配置
                     if (cache.isUseLocalConfigInfo()) {
                         continue;
                     }
-                    
+                    // 判读缓存数据是否还在使用
                     if (!cache.isDiscard()) {
                         List<CacheData> cacheDatas = listenCachesMap.computeIfAbsent(String.valueOf(cache.getTaskId()),
                                 k -> new LinkedList<>());

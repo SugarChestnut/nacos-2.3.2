@@ -475,6 +475,7 @@ public abstract class RpcClient implements Closeable {
         try {
             
             AtomicReference<ServerInfo> recommendServer = new AtomicReference<>(recommendServerInfo);
+            // 如果是请求失败，则在再进行健康检查，如果健康检查成功
             if (onRequestFail && healthCheck()) {
                 LoggerUtils.printIfInfoEnabled(LOGGER, "[{}] Server check success, currentServer is {} ",
                         rpcClientConfig.name(), currentConnection.serverInfo.getAddress());
@@ -512,6 +513,7 @@ public abstract class RpcClient implements Closeable {
                                     rpcClientConfig.name(), currentConnection.serverInfo.getAddress(),
                                     currentConnection.getConnectionId());
                             // set current connection to enable connection event.
+                            // 抛弃
                             currentConnection.setAbandon(true);
                             closeConnection(currentConnection);
                         }
@@ -634,6 +636,7 @@ public abstract class RpcClient implements Closeable {
         Response response;
         Throwable exceptionThrow = null;
         long start = System.currentTimeMillis();
+        // 默认重试3次
         while (retryTimes <= rpcClientConfig.retryTimes() && (timeoutMills <= 0
                 || System.currentTimeMillis() < timeoutMills + start)) {
             boolean waitReconnect = false;
