@@ -128,7 +128,7 @@ public class ClientWorker implements Closeable {
      */
     private final AtomicReference<Map<String, CacheData>> cacheMap = new AtomicReference<>(new HashMap<>());
     
-    private Map<String, String> appLables = new HashMap<>();
+    private Map<String, String> appLabels = new HashMap<>();
     
     private final ConfigFilterChainManager configFilterChainManager;
     
@@ -480,9 +480,8 @@ public class ClientWorker implements Closeable {
     public ClientWorker(final ConfigFilterChainManager configFilterChainManager, ServerListManager serverListManager,
             final NacosClientProperties properties) throws NacosException {
         this.configFilterChainManager = configFilterChainManager;
-        // 初始化参数
+        // 初始化一些参数
         init(properties);
-        
         agent = new ConfigRpcTransportClient(properties, serverListManager);
         ScheduledExecutorService executorService = Executors.newScheduledThreadPool(initWorkerThreadCount(properties),
                 new NameThreadFactory("com.alibaba.nacos.client.Worker"));
@@ -491,7 +490,7 @@ public class ClientWorker implements Closeable {
     }
     
     void initAppLabels(Properties properties) {
-        this.appLables = ConnLabelsUtils.addPrefixForEachKey(defaultLabelsCollectorManager.getLabels(properties),
+        this.appLabels = ConnLabelsUtils.addPrefixForEachKey(defaultLabelsCollectorManager.getLabels(properties),
                 APP_CONN_PREFIX);
     }
     
@@ -656,7 +655,7 @@ public class ClientWorker implements Closeable {
                 labels.put(Constants.LOCATION_TAG, EnvUtil.getSelfLocationTag());
             }
             
-            labels.putAll(appLables);
+            labels.putAll(appLabels);
             return labels;
         }
         
@@ -808,8 +807,8 @@ public class ClientWorker implements Closeable {
             long now = System.currentTimeMillis();
             // 超过180s
             boolean needAllSync = now - lastAllSyncTime >= ALL_SYNC_INTERNAL;
+            // 当添加监听器的时候才不为空
             for (CacheData cache : cacheMap.get().values()) {
-                
                 synchronized (cache) {
                     // 检查本地配置
                     checkLocalConfig(cache);
@@ -855,7 +854,6 @@ public class ClientWorker implements Closeable {
             if (hasChangedKeys) {
                 notifyListenConfig();
             }
-            
         }
         
         /**
@@ -1145,8 +1143,10 @@ public class ClientWorker implements Closeable {
         @Override
         public ConfigResponse queryConfig(String dataId, String group, String tenant, long readTimeouts, boolean notify)
                 throws NacosException {
+            //
             RpcClient rpcClient = getOneRunningClient();
             if (notify) {
+                // key = dataId + '+' + group + '+' + tenant
                 CacheData cacheData = cacheMap.get().get(GroupKey.getKeyTenant(dataId, group, tenant));
                 if (cacheData != null) {
                     rpcClient = ensureRpcClient(String.valueOf(cacheData.getTaskId()));

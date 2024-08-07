@@ -187,7 +187,7 @@ public class ParamUtil {
      */
     public static String parseNamespace(NacosClientProperties properties) {
         String namespaceTmp = null;
-        
+        // 默认 true
         String isUseCloudNamespaceParsing = properties.getProperty(PropertyKeyConst.IS_USE_CLOUD_NAMESPACE_PARSING,
                 properties.getProperty(SystemPropertyKeyConst.IS_USE_CLOUD_NAMESPACE_PARSING,
                         String.valueOf(Constants.DEFAULT_USE_CLOUD_NAMESPACE_PARSING)));

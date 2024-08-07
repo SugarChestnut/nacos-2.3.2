@@ -83,7 +83,7 @@ public class NacosConfigService implements ConfigService {
         // 创建配置类
         final NacosClientProperties clientProperties = NacosClientProperties.PROTOTYPE.derive(properties);
         ValidatorUtils.checkInitParam(clientProperties);
-        // 设置 namespace
+        // 获取 namespace
         initNamespace(clientProperties);
         this.configFilterChainManager = new ConfigFilterChainManager(clientProperties.asProperties());
         ServerListManager serverListManager = new ServerListManager(clientProperties);

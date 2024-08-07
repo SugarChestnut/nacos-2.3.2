@@ -55,9 +55,9 @@ public class CacheData {
     
     private static final Logger LOGGER = LogUtils.logger(CacheData.class);
     
-    private static final long DEFAULT_NOTIF_WARN_TIMEOUTS = 60000;
+    private static final long DEFAULT_NOTIFY_WARN_TIMEOUTS = 60000;
     
-    private static long notifyWarnTimeout = DEFAULT_NOTIF_WARN_TIMEOUTS;
+    private static long notifyWarnTimeout = DEFAULT_NOTIFY_WARN_TIMEOUTS;
     
     static {
         initNotifyWarnTimeout();
@@ -70,8 +70,8 @@ public class CacheData {
             LOGGER.info("config listener notify warn timeout millis is set to {}", notifyWarnTimeout);
         } else {
             LOGGER.info("config listener notify warn timeout millis use default {} millis ",
-                    DEFAULT_NOTIF_WARN_TIMEOUTS);
-            notifyWarnTimeout = DEFAULT_NOTIF_WARN_TIMEOUTS;
+                    DEFAULT_NOTIFY_WARN_TIMEOUTS);
+            notifyWarnTimeout = DEFAULT_NOTIFY_WARN_TIMEOUTS;
         }
         return notifyWarnTimeout;
     }

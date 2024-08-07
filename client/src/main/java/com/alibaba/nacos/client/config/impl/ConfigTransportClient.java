@@ -75,7 +75,6 @@ public abstract class ConfigTransportClient {
         } else {
             this.encode = encodeTmp.trim();
         }
-        
         this.tenant = properties.getProperty(PropertyKeyConst.NAMESPACE);
         this.serverListManager = serverListManager;
         this.properties = properties.asProperties();
