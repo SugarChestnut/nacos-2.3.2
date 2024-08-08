@@ -127,7 +127,10 @@ public class ClientWorker implements Closeable {
      * groupKey -> cacheData.
      */
     private final AtomicReference<Map<String, CacheData>> cacheMap = new AtomicReference<>(new HashMap<>());
-    
+
+    /**
+     * 监控的标签
+     */
     private Map<String, String> appLabels = new HashMap<>();
     
     private final ConfigFilterChainManager configFilterChainManager;
@@ -195,6 +198,7 @@ public class ClientWorker implements Closeable {
             cache.setDiscard(false);
             cache.setConsistentWithServer(false);
             // ensure cache present in cacheMap
+            // 多余操作
             if (getCache(dataId, group, tenant) != cache) {
                 putCache(GroupKey.getKeyTenant(dataId, group, tenant), cache);
             }
@@ -1004,7 +1008,6 @@ public class ClientWorker implements Closeable {
                 for (Map.Entry<String, List<CacheData>> entry : listenCachesMap.entrySet()) {
                     String taskId = entry.getKey();
                     RpcClient rpcClient = ensureRpcClient(taskId);
-                    
                     ExecutorService executorService = ensureSyncExecutor(taskId);
                     Future future = executorService.submit(() -> {
                         List<CacheData> listenCaches = entry.getValue();
@@ -1145,6 +1148,7 @@ public class ClientWorker implements Closeable {
                 throws NacosException {
             //
             RpcClient rpcClient = getOneRunningClient();
+            // 应该跟监听器相关
             if (notify) {
                 // key = dataId + '+' + group + '+' + tenant
                 CacheData cacheData = cacheMap.get().get(GroupKey.getKeyTenant(dataId, group, tenant));
