@@ -800,6 +800,7 @@ public class ClientWorker implements Closeable {
         
         @Override
         public void notifyListenConfig() {
+            // 非阻塞，失败返回 false
             listenExecutebell.offer(bellItem);
         }
         
@@ -1012,6 +1013,7 @@ public class ClientWorker implements Closeable {
                     Future future = executorService.submit(() -> {
                         List<CacheData> listenCaches = entry.getValue();
                         //reset notify change flag.
+                        // 重置初始化
                         for (CacheData cacheData : listenCaches) {
                             cacheData.getReceiveNotifyChanged().set(false);
                         }
@@ -1021,9 +1023,7 @@ public class ClientWorker implements Closeable {
                             ConfigChangeBatchListenResponse listenResponse = (ConfigChangeBatchListenResponse) requestProxy(
                                     rpcClient, configChangeListenRequest);
                             if (listenResponse != null && listenResponse.isSuccess()) {
-                                
                                 Set<String> changeKeys = new HashSet<String>();
-                                
                                 List<ConfigChangeBatchListenResponse.ConfigContext> changedConfigs = listenResponse.getChangedConfigs();
                                 //handle changed keys,notify listener
                                 if (!CollectionUtils.isEmpty(changedConfigs)) {
