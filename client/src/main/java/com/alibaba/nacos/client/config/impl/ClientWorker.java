@@ -843,7 +843,6 @@ public class ClientWorker implements Closeable {
                         cacheDatas.add(cache);
                     }
                 }
-                
             }
             
             //execute check listen ,return true if has change keys.
@@ -851,7 +850,8 @@ public class ClientWorker implements Closeable {
             
             //execute check remove listen.
             checkRemoveListenCache(removeListenCachesMap);
-            
+
+            // ? 聊胜于无？
             if (needAllSync) {
                 lastAllSyncTime = now;
             }
@@ -1035,14 +1035,14 @@ public class ClientWorker implements Closeable {
                                         boolean isInitializing = cacheMap.get().get(changeKey).isInitializing();
                                         refreshContentAndCheck(rpcClient, changeKey, !isInitializing);
                                     }
-                                    
                                 }
-                                
+                                // 什么时候状态才会变呢？
                                 for (CacheData cacheData : listenCaches) {
                                     if (cacheData.getReceiveNotifyChanged().get()) {
                                         String changeKey = GroupKey.getKeyTenant(cacheData.dataId, cacheData.group,
                                                 cacheData.getTenant());
                                         if (!changeKeys.contains(changeKey)) {
+                                            // 默认为 true
                                             boolean isInitializing = cacheMap.get().get(changeKey).isInitializing();
                                             refreshContentAndCheck(rpcClient, changeKey, !isInitializing);
                                         }

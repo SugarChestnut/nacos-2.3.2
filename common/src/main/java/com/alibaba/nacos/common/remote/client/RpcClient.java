@@ -105,6 +105,7 @@ public abstract class RpcClient implements Closeable {
     protected final ResourceLoader resourceLoader = new DefaultResourceLoader();
     
     static {
+        // SPI加载Payload
         PayloadRegistry.init();
     }
     
