@@ -16,6 +16,8 @@
 
 package com.alibaba.nacos.config.server;
 
+import com.alibaba.nacos.sys.env.Constants;
+import com.alibaba.nacos.sys.env.EnvUtil;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.scheduling.annotation.EnableScheduling;
@@ -30,6 +32,9 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 public class Config {
     
     public static void main(String[] args) {
+        System.setProperty(Constants.STANDALONE_MODE_PROPERTY_NAME, Boolean.toString(Boolean.TRUE));
+        System.setProperty(EnvUtil.NACOS_HOME_KEY, "E:\\Java\\nacos-2.3.2");
+
         SpringApplication.run(Config.class, args);
     }
 }

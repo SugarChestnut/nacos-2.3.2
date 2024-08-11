@@ -100,12 +100,13 @@ public class StartingApplicationListener implements NacosApplicationListener {
     
     @Override
     public void environmentPrepared(ConfigurableEnvironment environment) {
+        // 创建基础文件夹
         makeWorkDir();
-        
+        // 没啥用，缓存 environment
         injectEnvironment(environment);
-        
+        // 加载配置文件，设置到 environment 中，同时注册一个 watch，监控文件修改，当文件修改时，重新加载配置
         loadPreProperties(environment);
-        
+        // 设置系统变量，集群模式、功能模式，本地IP
         initSystemProperty();
     }
     
@@ -124,9 +125,7 @@ public class StartingApplicationListener implements NacosApplicationListener {
     @Override
     public void started(ConfigurableApplicationContext context) {
         starting = false;
-        
         closeExecutor();
-        
         ApplicationUtils.setStarted(true);
         judgeStorageMode(context.getEnvironment());
     }

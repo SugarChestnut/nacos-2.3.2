@@ -73,10 +73,6 @@ public class NacosConfigService implements ConfigService {
 
     private final ConfigFilterChainManager configFilterChainManager;
 
-    /**
-     * @param properties 包含配置中心地址等信息
-     * @throws NacosException 服务创建异常
-     */
     public NacosConfigService(Properties properties) throws NacosException {
         // 耗时操作，Jackson、凭证初始化
         PreInitUtils.asyncPreLoadCostComponent();

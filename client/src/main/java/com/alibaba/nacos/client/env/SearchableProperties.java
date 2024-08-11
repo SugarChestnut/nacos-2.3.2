@@ -36,18 +36,20 @@ import java.util.stream.Collectors;
  * @author onewe
  */
 class SearchableProperties implements NacosClientProperties {
-    
+
     private static final Logger LOGGER = LoggerFactory.getLogger(SearchableProperties.class);
-    
+
     private static final JvmArgsPropertySource JVM_ARGS_PROPERTY_SOURCE = new JvmArgsPropertySource();
-    
+
     private static final SystemEnvPropertySource SYSTEM_ENV_PROPERTY_SOURCE = new SystemEnvPropertySource();
 
-    // 资源排序方式
+    /**
+     * 资源排序方式.
+     */
     private static final List<SourceType> SEARCH_ORDER;
-    
+
     private static final CompositeConverter CONVERTER = new CompositeConverter();
-    
+
     static {
         SEARCH_ORDER = init();
         StringBuilder orderInfo = new StringBuilder("properties search order:");
@@ -59,15 +61,15 @@ class SearchableProperties implements NacosClientProperties {
         }
         LOGGER.debug(orderInfo.toString());
     }
-    
+
     private static List<SourceType> init() {
         List<SourceType> initOrder = Arrays.asList(SourceType.PROPERTIES, SourceType.JVM, SourceType.ENV);
-        
+
         String firstEnv = JVM_ARGS_PROPERTY_SOURCE.getProperty(Constants.SysEnv.NACOS_ENV_FIRST);
         if (StringUtils.isBlank(firstEnv)) {
             firstEnv = SYSTEM_ENV_PROPERTY_SOURCE.getProperty(Constants.SysEnv.NACOS_ENV_FIRST);
         }
-        
+
         if (StringUtils.isNotBlank(firstEnv)) {
             try {
                 final SourceType sourceType = SourceType.valueOf(firstEnv.toUpperCase());
@@ -82,34 +84,38 @@ class SearchableProperties implements NacosClientProperties {
         }
         return initOrder;
     }
-    
+
     static final SearchableProperties INSTANCE = new SearchableProperties();
 
-    // 排序后的资源列表，包含 propertiesPropertySource
+    /**
+     * 排序后的资源列表，包含 propertiesPropertySource.
+     */
     private final List<AbstractPropertySource> propertySources;
 
-    // 当前配置
+    /**
+     * 当前配置.
+     */
     private final PropertiesPropertySource propertiesPropertySource;
-    
+
     private SearchableProperties() {
         this(new PropertiesPropertySource());
     }
-    
+
     private SearchableProperties(PropertiesPropertySource propertiesPropertySource) {
         this.propertiesPropertySource = propertiesPropertySource;
         this.propertySources = build(propertiesPropertySource, JVM_ARGS_PROPERTY_SOURCE, SYSTEM_ENV_PROPERTY_SOURCE);
     }
-    
+
     @Override
     public String getProperty(String key) {
         return getProperty(key, null);
     }
-    
+
     @Override
     public String getProperty(String key, String defaultValue) {
         return this.search(key, String.class).orElse(defaultValue);
     }
-    
+
     @Override
     public String getPropertyFrom(SourceType source, String key) {
         if (source == null) {
@@ -126,7 +132,7 @@ class SearchableProperties implements NacosClientProperties {
                 return this.getProperty(key);
         }
     }
-    
+
     @Override
     public Properties getProperties(SourceType source) {
         if (source == null) {
@@ -143,47 +149,47 @@ class SearchableProperties implements NacosClientProperties {
                 return null;
         }
     }
-    
+
     @Override
     public Boolean getBoolean(String key) {
         return getBoolean(key, null);
     }
-    
+
     @Override
     public Boolean getBoolean(String key, Boolean defaultValue) {
         return this.search(key, Boolean.class).orElse(defaultValue);
     }
-    
+
     @Override
     public Integer getInteger(String key) {
         return getInteger(key, null);
     }
-    
+
     @Override
     public Integer getInteger(String key, Integer defaultValue) {
         return this.search(key, Integer.class).orElse(defaultValue);
     }
-    
+
     @Override
     public Long getLong(String key) {
         return getLong(key, null);
     }
-    
+
     @Override
     public Long getLong(String key, Long defaultValue) {
         return this.search(key, Long.class).orElse(defaultValue);
     }
-    
+
     @Override
     public void setProperty(String key, String value) {
         propertiesPropertySource.setProperty(key, value);
     }
-    
+
     @Override
     public void addProperties(Properties properties) {
         propertiesPropertySource.addProperties(properties);
     }
-    
+
     @Override
     public Properties asProperties() {
         Properties properties = new Properties();
@@ -194,7 +200,7 @@ class SearchableProperties implements NacosClientProperties {
         }
         return properties;
     }
-    
+
     @Override
     public boolean containsKey(String key) {
         for (AbstractPropertySource propertySource : propertySources) {
@@ -205,7 +211,7 @@ class SearchableProperties implements NacosClientProperties {
         }
         return false;
     }
-    
+
     private <T> Optional<T> search(String key, Class<T> targetType) {
         for (AbstractPropertySource propertySource : propertySources) {
             final String value = propertySource.getProperty(key);
@@ -218,18 +224,18 @@ class SearchableProperties implements NacosClientProperties {
         }
         return Optional.empty();
     }
-    
+
     private List<AbstractPropertySource> build(AbstractPropertySource... propertySources) {
         final Map<SourceType, AbstractPropertySource> sourceMap = Arrays.stream(propertySources)
                 .collect(Collectors.toMap(AbstractPropertySource::getType, propertySource -> propertySource));
         return SEARCH_ORDER.stream().map(sourceMap::get).collect(Collectors.toList());
     }
-    
+
     @Override
     public NacosClientProperties derive() {
         return new SearchableProperties(new PropertiesPropertySource(this.propertiesPropertySource));
     }
-    
+
     @Override
     public NacosClientProperties derive(Properties properties) {
         final NacosClientProperties nacosClientProperties = this.derive();

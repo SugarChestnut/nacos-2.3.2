@@ -128,9 +128,6 @@ public class ClientWorker implements Closeable {
      */
     private final AtomicReference<Map<String, CacheData>> cacheMap = new AtomicReference<>(new HashMap<>());
 
-    /**
-     * 监控的标签
-     */
     private Map<String, String> appLabels = new HashMap<>();
     
     private final ConfigFilterChainManager configFilterChainManager;

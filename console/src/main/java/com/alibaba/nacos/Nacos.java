@@ -16,6 +16,8 @@
 
 package com.alibaba.nacos;
 
+import com.alibaba.nacos.sys.env.Constants;
+import com.alibaba.nacos.sys.env.EnvUtil;
 import com.alibaba.nacos.sys.filter.NacosTypeExcludeFilter;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.AutoConfigurationExcludeFilter;
@@ -45,8 +47,9 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 @ServletComponentScan
 @EnableScheduling
 public class Nacos {
-
     public static void main(String[] args) {
+        System.setProperty(Constants.STANDALONE_MODE_PROPERTY_NAME, Boolean.toString(Boolean.TRUE));
+        System.setProperty(EnvUtil.NACOS_HOME_KEY, "E:\\Java\\nacos-2.3.2");
         SpringApplication.run(Nacos.class, args);
     }
 }

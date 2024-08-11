@@ -66,6 +66,7 @@ public interface Serializer {
      * @param <T>           class type
      * @return target object instance
      */
+    @SuppressWarnings("unchecked")
     default <T> T deserialize(byte[] data, String classFullName) {
         try {
             Class<?> cls = CLASS_CACHE.computeIfAbsent(classFullName, name -> {

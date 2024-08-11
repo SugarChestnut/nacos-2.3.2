@@ -18,3 +18,7 @@ test/logs
 derby.log
 yarn.lock
 .flattened-pom.xml
+data
+conf
+logs
+

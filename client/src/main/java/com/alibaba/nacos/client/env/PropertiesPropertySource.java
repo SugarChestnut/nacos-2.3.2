@@ -23,30 +23,34 @@ import java.util.Properties;
 
 class PropertiesPropertySource extends AbstractPropertySource {
 
-    // 当前配置
+    /**
+     * 当前配置.
+     */
     private final Properties properties = new Properties();
 
-    // 父配置
+    /**
+     * 父配置.
+     */
     private final PropertiesPropertySource parent;
-    
+
     PropertiesPropertySource() {
         this.parent = null;
     }
-    
+
     PropertiesPropertySource(PropertiesPropertySource parent) {
         this.parent = parent;
     }
-    
+
     @Override
     SourceType getType() {
         return SourceType.PROPERTIES;
     }
-    
+
     @Override
     String getProperty(String key) {
         return getProperty(this, key);
     }
-    
+
     private String getProperty(PropertiesPropertySource propertiesPropertySource, String key) {
         final String value = propertiesPropertySource.properties.getProperty(key);
         if (value != null) {
@@ -58,12 +62,12 @@ class PropertiesPropertySource extends AbstractPropertySource {
         }
         return getProperty(parent, key);
     }
-    
+
     @Override
     boolean containsKey(String key) {
         return containsKey(this, key);
     }
-    
+
     boolean containsKey(PropertiesPropertySource propertiesPropertySource, String key) {
         final boolean exist = propertiesPropertySource.properties.containsKey(key);
         if (exist) {
@@ -75,13 +79,13 @@ class PropertiesPropertySource extends AbstractPropertySource {
         }
         return containsKey(parent, key);
     }
-    
+
     @Override
     Properties asProperties() {
         List<Properties> propertiesList = new ArrayList<>(8);
-        
+
         propertiesList = lookForProperties(this, propertiesList);
-        
+
         Properties ret = new Properties();
         final ListIterator<Properties> iterator = propertiesList.listIterator(propertiesList.size());
         while (iterator.hasPrevious()) {
@@ -90,7 +94,7 @@ class PropertiesPropertySource extends AbstractPropertySource {
         }
         return ret;
     }
-    
+
     List<Properties> lookForProperties(PropertiesPropertySource propertiesPropertySource, List<Properties> propertiesList) {
         propertiesList.add(propertiesPropertySource.properties);
         final PropertiesPropertySource parent = propertiesPropertySource.parent;
@@ -99,11 +103,11 @@ class PropertiesPropertySource extends AbstractPropertySource {
         }
         return lookForProperties(parent, propertiesList);
     }
-    
+
     synchronized void setProperty(String key, String value) {
         properties.setProperty(key, value);
     }
-    
+
     synchronized void addProperties(Properties source) {
         properties.putAll(source);
     }

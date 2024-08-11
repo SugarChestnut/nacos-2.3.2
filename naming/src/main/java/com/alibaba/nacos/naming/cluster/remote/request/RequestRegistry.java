@@ -29,7 +29,7 @@ import java.util.Set;
  */
 public class RequestRegistry {
     
-    private static final Set<Class<? extends Payload>> payloads = registryPayload();
+    private static final Set<Class<? extends Payload>> PAYLOADS = registryPayload();
     
     private static Set<Class<? extends Payload>> registryPayload() {
         HashSet<Class<? extends Payload>> payloads = new HashSet<>();
@@ -39,6 +39,6 @@ public class RequestRegistry {
     }
     
     public static Set<Class<? extends Payload>> getPayloads() {
-        return payloads;
+        return PAYLOADS;
     }
 }

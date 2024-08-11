@@ -144,7 +144,7 @@ public class NacosAuthConfig {
     }
 
     /**
-     * 过滤器链
+     * 过滤器链.
      */
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {

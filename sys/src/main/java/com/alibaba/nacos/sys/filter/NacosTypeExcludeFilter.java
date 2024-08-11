@@ -25,6 +25,7 @@ import org.springframework.core.type.classreading.MetadataReaderFactory;
 import org.springframework.core.type.filter.TypeFilter;
 
 import java.io.IOException;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
@@ -42,7 +43,8 @@ public class NacosTypeExcludeFilter implements TypeFilter {
     
     public NacosTypeExcludeFilter() {
         this.packageExcludeFilters = new HashMap<>(2);
-        for (NacosPackageExcludeFilter each : NacosServiceLoader.load(NacosPackageExcludeFilter.class)) {
+        Collection<NacosPackageExcludeFilter> excludeFilters = NacosServiceLoader.load(NacosPackageExcludeFilter.class);
+        for (NacosPackageExcludeFilter each : excludeFilters) {
             packageExcludeFilters.put(each.getResponsiblePackagePrefix(), each);
             LOGGER.info("Load Nacos package exclude filter success, package prefix {}, filter {}",
                     each.getResponsiblePackagePrefix(), each.getClass().getCanonicalName());

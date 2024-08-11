@@ -9,6 +9,7 @@ import com.alibaba.nacos.api.exception.NacosException;
 import java.util.Properties;
 
 /**
+ * 测试.
  * @author rtt
  * @date 2024/8/6 14:57
  */
