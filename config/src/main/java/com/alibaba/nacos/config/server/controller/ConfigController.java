@@ -154,22 +154,22 @@ public class ConfigController {
     @PostMapping
     @TpsControl(pointName = "ConfigPublish")
     @Secured(action = ActionTypes.WRITE, signType = SignType.CONFIG)
-    public Boolean publishConfig(HttpServletRequest request, HttpServletResponse response,
-                                 @RequestParam(value = "dataId") String dataId,
-                                 @RequestParam(value = "group") String group,
-                                 @RequestParam(value = "tenant", required = false,
-                                         defaultValue = StringUtils.EMPTY) String tenant,
-                                 @RequestParam(value = "content") String content,
-                                 @RequestParam(value = "tag", required = false) String tag,
-                                 @RequestParam(value = "appName", required = false) String appName,
-                                 @RequestParam(value = "src_user", required = false) String srcUser,
-                                 @RequestParam(value = "config_tags", required = false) String configTags,
-                                 @RequestParam(value = "desc", required = false) String desc,
-                                 @RequestParam(value = "use", required = false) String use,
-                                 @RequestParam(value = "effect", required = false) String effect,
-                                 @RequestParam(value = "type", required = false) String type,
-                                 @RequestParam(value = "schema", required = false) String schema,
-                                 @RequestParam(required = false) String encryptedDataKey) throws NacosException {
+    public Boolean publishConfig(
+            HttpServletRequest request, HttpServletResponse response,
+            @RequestParam(value = "dataId") String dataId,
+            @RequestParam(value = "group") String group,
+            @RequestParam(value = "tenant", required = false, defaultValue = StringUtils.EMPTY) String tenant,
+            @RequestParam(value = "content") String content,
+            @RequestParam(value = "tag", required = false) String tag,
+            @RequestParam(value = "appName", required = false) String appName,
+            @RequestParam(value = "src_user", required = false) String srcUser,
+            @RequestParam(value = "config_tags", required = false) String configTags,
+            @RequestParam(value = "desc", required = false) String desc,
+            @RequestParam(value = "use", required = false) String use,
+            @RequestParam(value = "effect", required = false) String effect,
+            @RequestParam(value = "type", required = false) String type,
+            @RequestParam(value = "schema", required = false) String schema,
+            @RequestParam(required = false) String encryptedDataKey) throws NacosException {
 
         String encryptedDataKeyFinal = null;
         if (StringUtils.isNotBlank(encryptedDataKey)) {
