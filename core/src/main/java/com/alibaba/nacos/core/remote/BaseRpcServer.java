@@ -46,7 +46,7 @@ public abstract class BaseRpcServer {
         Loggers.REMOTE.info("Nacos {} Rpc server starting at port {}", serverName, getServicePort());
         
         startServer();
-        
+        // 默认不支持 ssl
         if (RpcServerSslContextRefresherHolder.getInstance() != null) {
             RpcServerSslContextRefresherHolder.getInstance().refresh(this);
         }

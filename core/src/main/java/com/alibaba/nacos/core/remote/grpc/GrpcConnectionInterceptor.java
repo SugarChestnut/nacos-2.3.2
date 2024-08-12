@@ -38,6 +38,7 @@ public class GrpcConnectionInterceptor implements ServerInterceptor {
     @Override
     public <T, S> ServerCall.Listener<T> interceptCall(ServerCall<T, S> call, Metadata headers,
             ServerCallHandler<T, S> next) {
+        // 从 ThreadLocal 获取
         Context ctx = Context.current().withValue(GrpcServerConstants.CONTEXT_KEY_CONN_ID,
                         call.getAttributes().get(GrpcServerConstants.ATTR_TRANS_KEY_CONN_ID))
                 .withValue(GrpcServerConstants.CONTEXT_KEY_CONN_REMOTE_IP,
@@ -46,11 +47,12 @@ public class GrpcConnectionInterceptor implements ServerInterceptor {
                         call.getAttributes().get(GrpcServerConstants.ATTR_TRANS_KEY_REMOTE_PORT))
                 .withValue(GrpcServerConstants.CONTEXT_KEY_CONN_LOCAL_PORT,
                         call.getAttributes().get(GrpcServerConstants.ATTR_TRANS_KEY_LOCAL_PORT));
+
         if (GrpcServerConstants.REQUEST_BI_STREAM_SERVICE_NAME.equals(call.getMethodDescriptor().getServiceName())) {
             Channel internalChannel = getInternalChannel(call);
             ctx = ctx.withValue(GrpcServerConstants.CONTEXT_KEY_CHANNEL, internalChannel);
         }
-        
+        System.out.println("--- GrpcConnectionInterceptor.interceptCall()");
         return Contexts.interceptCall(ctx, call, headers, next);
     }
     

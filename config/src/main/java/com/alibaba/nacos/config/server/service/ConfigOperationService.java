@@ -70,7 +70,7 @@ public class ConfigOperationService {
     
     /**
      * Adds or updates non-aggregated data.
-     *
+     * 创建或更新配置.
      * @throws NacosException NacosException.
      */
     public Boolean publishConfig(ConfigForm configForm, ConfigRequestInfo configRequestInfo, String encryptedDataKey)
@@ -111,9 +111,11 @@ public class ConfigOperationService {
                                 ErrorCode.RESOURCE_CONFLICT, "Cas publish fail, server md5 may have changed.");
                     }
                 } else {
+                    // 一般情况下走的这个逻辑，插入数据库
                     configOperateResult = configInfoPersistService.insertOrUpdate(configRequestInfo.getSrcIp(),
                             configForm.getSrcUser(), configInfo, configAdvanceInfo);
                 }
+                // 发布事件
                 ConfigChangePublisher.notifyConfigChange(
                         new ConfigDataChangeEvent(false, configForm.getDataId(), configForm.getGroup(),
                                 configForm.getNamespaceId(), configOperateResult.getLastModified()));

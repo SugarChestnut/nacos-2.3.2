@@ -41,7 +41,10 @@ public class GlobalExecutor {
     private static final ScheduledExecutorService DISTRO_EXECUTOR = ExecutorFactory.Managed
             .newScheduledExecutorService(ClassUtils.getCanonicalName(GlobalExecutor.class),
                     EnvUtil.getAvailableProcessors(2), new NameThreadFactory("com.alibaba.nacos.core.protocal.distro"));
-    
+
+    /**
+     * 16、16、60s.
+     */
     public static final ThreadPoolExecutor sdkRpcExecutor = new ThreadPoolExecutor(
             EnvUtil.getAvailableProcessors(RemoteUtils.getRemoteExecutorTimesOfProcessors()),
             EnvUtil.getAvailableProcessors(RemoteUtils.getRemoteExecutorTimesOfProcessors()), 60L, TimeUnit.SECONDS,

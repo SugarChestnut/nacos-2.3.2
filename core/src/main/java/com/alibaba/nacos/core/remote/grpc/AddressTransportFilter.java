@@ -32,7 +32,7 @@ import static com.alibaba.nacos.core.remote.grpc.GrpcServerConstants.ATTR_TRANS_
 
 /**
  * AddressTransportFilter process remote address, local address and connection id attributes.
- *
+ * 处理远程地址、本地地址和连接属性
  * @author Weizhan▪Yun
  * @date 2023/1/5 15:45
  */
@@ -46,10 +46,8 @@ public class AddressTransportFilter extends ServerTransportFilter {
     
     @Override
     public Attributes transportReady(Attributes transportAttrs) {
-        InetSocketAddress remoteAddress = (InetSocketAddress) transportAttrs
-                .get(Grpc.TRANSPORT_ATTR_REMOTE_ADDR);
-        InetSocketAddress localAddress = (InetSocketAddress) transportAttrs
-                .get(Grpc.TRANSPORT_ATTR_LOCAL_ADDR);
+        InetSocketAddress remoteAddress = (InetSocketAddress) transportAttrs.get(Grpc.TRANSPORT_ATTR_REMOTE_ADDR);
+        InetSocketAddress localAddress = (InetSocketAddress) transportAttrs.get(Grpc.TRANSPORT_ATTR_LOCAL_ADDR);
         int remotePort = remoteAddress.getPort();
         int localPort = localAddress.getPort();
         String remoteIp = remoteAddress.getAddress().getHostAddress();
@@ -59,6 +57,8 @@ public class AddressTransportFilter extends ServerTransportFilter {
                 .set(ATTR_TRANS_KEY_LOCAL_PORT, localPort).build();
         String connectionId = attrWrapper.get(ATTR_TRANS_KEY_CONN_ID);
         Loggers.REMOTE_DIGEST.info("Connection transportReady,connectionId = {} ", connectionId);
+
+        System.out.println("--- AddressTransportFilter.transportReady()");
         return attrWrapper;
         
     }
@@ -76,5 +76,7 @@ public class AddressTransportFilter extends ServerTransportFilter {
                     .info("Connection transportTerminated,connectionId = {} ", connectionId);
             connectionManager.unregister(connectionId);
         }
+
+        System.out.println("--- AddressTransportFilter.transportTerminated()");
     }
 }

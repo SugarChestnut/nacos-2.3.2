@@ -34,6 +34,7 @@ public class ConfigChangePublisher {
      * @param event ConfigDataChangeEvent instance.
      */
     public static void notifyConfigChange(ConfigDataChangeEvent event) {
+        // 使用内置数据库或者集群模式下，不发布事件
         if (DatasourceConfiguration.isEmbeddedStorage() && !EnvUtil.getStandaloneMode()) {
             return;
         }
