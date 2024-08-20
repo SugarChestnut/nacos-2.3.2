@@ -181,6 +181,7 @@ public abstract class BaseGrpcServer extends BaseRpcServer {
                 .addMethod(unaryPayloadMethod, payloadHandler)
                 .build();
 
+        // 将拦截器添加到方法调用中
         handlerRegistry.addService(ServerInterceptors.intercept(serviceDefOfUnaryPayload, serverInterceptor));
 
         // bi stream register.
