@@ -68,6 +68,7 @@ public class FailoverReactor implements Closeable {
     public FailoverReactor(ServiceInfoHolder serviceInfoHolder, String notifierEventScope) {
         this.serviceInfoHolder = serviceInfoHolder;
         this.notifierEventScope = notifierEventScope;
+        // 默认存在一个实现
         Collection<FailoverDataSource> dataSources = NacosServiceLoader.load(FailoverDataSource.class);
         for (FailoverDataSource dataSource : dataSources) {
             failoverDataSource = dataSource;
@@ -75,6 +76,7 @@ public class FailoverReactor implements Closeable {
             break;
         }
         // init executorService
+        // 线程池
         this.executorService = new ScheduledThreadPoolExecutor(1,
                 new NameThreadFactory("com.alibaba.nacos.naming.failover"));
         this.init();
@@ -92,6 +94,7 @@ public class FailoverReactor implements Closeable {
         @Override
         public void run() {
             try {
+                // 一般情况下故障转移文件不存在
                 FailoverSwitch fSwitch = failoverDataSource.getSwitch();
                 if (fSwitch == null) {
                     failoverSwitchEnable = false;

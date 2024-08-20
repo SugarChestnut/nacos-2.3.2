@@ -103,6 +103,7 @@ public class NamingGrpcClientProxy extends AbstractNamingClientProxy {
         labels.put(RemoteConstants.LABEL_SOURCE, RemoteConstants.LABEL_SOURCE_SDK);
         labels.put(RemoteConstants.LABEL_MODULE, RemoteConstants.LABEL_MODULE_NAMING);
         labels.put(Constants.APPNAME, AppNameUtils.getAppName());
+        // 跟配置中心里创建是一样的
         this.rpcClient = RpcClientFactory.createClient(uuid, ConnectionType.GRPC, labels,
                 RpcClientTlsConfig.properties(properties.asProperties()));
         this.redoService = new NamingGrpcRedoService(this, properties);

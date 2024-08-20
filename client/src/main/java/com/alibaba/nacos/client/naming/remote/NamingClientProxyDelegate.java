@@ -73,6 +73,7 @@ public class NamingClientProxyDelegate implements NamingClientProxy {
                 changeNotifier);
         this.serverListManager = new ServerListManager(properties, namespace);
         this.serviceInfoHolder = serviceInfoHolder;
+        // 跟 config 客户端的认证方式一样
         this.securityProxy = new SecurityProxy(this.serverListManager.getServerList(),
                 NamingHttpClientManager.getInstance().getNacosRestTemplate());
         initSecurityProxy(properties);
