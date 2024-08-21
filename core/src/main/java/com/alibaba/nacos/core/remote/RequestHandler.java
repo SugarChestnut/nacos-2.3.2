@@ -53,7 +53,6 @@ public abstract class RequestHandler<T extends Request, S extends Response> {
             } catch (Throwable throwable) {
                 Loggers.REMOTE.error("filter error", throwable);
             }
-            
         }
         return handle(request, meta);
     }
