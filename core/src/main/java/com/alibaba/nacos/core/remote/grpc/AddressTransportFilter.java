@@ -58,7 +58,6 @@ public class AddressTransportFilter extends ServerTransportFilter {
         String connectionId = attrWrapper.get(ATTR_TRANS_KEY_CONN_ID);
         Loggers.REMOTE_DIGEST.info("Connection transportReady,connectionId = {} ", connectionId);
 
-        System.out.println("--- AddressTransportFilter.transportReady()");
         return attrWrapper;
         
     }
@@ -77,6 +76,6 @@ public class AddressTransportFilter extends ServerTransportFilter {
             connectionManager.unregister(connectionId);
         }
 
-        System.out.println("--- AddressTransportFilter.transportTerminated()");
+        System.out.println("--- AddressTransportFilter.transportTerminated(" +connectionId + ")");
     }
 }

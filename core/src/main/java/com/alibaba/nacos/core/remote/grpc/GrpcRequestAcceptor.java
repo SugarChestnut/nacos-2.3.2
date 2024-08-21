@@ -20,6 +20,7 @@ import com.alibaba.nacos.api.exception.NacosException;
 import com.alibaba.nacos.api.grpc.auto.Payload;
 import com.alibaba.nacos.api.grpc.auto.RequestGrpc;
 import com.alibaba.nacos.api.remote.RpcScheduledExecutor;
+import com.alibaba.nacos.api.remote.request.HealthCheckRequest;
 import com.alibaba.nacos.api.remote.request.Request;
 import com.alibaba.nacos.api.remote.request.RequestMeta;
 import com.alibaba.nacos.api.remote.request.ServerCheckRequest;
@@ -39,6 +40,7 @@ import io.grpc.stub.StreamObserver;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -74,7 +76,6 @@ public class GrpcRequestAcceptor extends RequestGrpc.RequestImplBase {
     
     @Override
     public void request(Payload grpcRequest, StreamObserver<Payload> responseObserver) {
-        
         traceIfNecessary(grpcRequest, true);
         String type = grpcRequest.getMetadata().getType();
         long startTime = System.nanoTime();
@@ -85,8 +86,8 @@ public class GrpcRequestAcceptor extends RequestGrpc.RequestImplBase {
                     ErrorResponse.build(NacosException.INVALID_SERVER_STATUS, "Server is starting,please try later."));
             traceIfNecessary(payloadResponse, false);
             responseObserver.onNext(payloadResponse);
-            
             responseObserver.onCompleted();
+            // 统计
             MetricsMonitor.recordGrpcRequestEvent(type, false,
                     NacosException.INVALID_SERVER_STATUS, null, null, System.nanoTime() - startTime);
             return;
@@ -177,6 +178,7 @@ public class GrpcRequestAcceptor extends RequestGrpc.RequestImplBase {
         }
         
         Request request = (Request) parseObj;
+        System.out.printf("[%s] [%s] %s%n", LocalDateTime.now(), connectionId, request.getClass());
         try {
             Connection connection = connectionManager.getConnection(GrpcServerConstants.CONTEXT_KEY_CONN_ID.get());
             RequestMeta requestMeta = new RequestMeta();

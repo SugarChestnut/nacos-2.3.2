@@ -63,7 +63,6 @@ public class GrpcBiStreamRequestAcceptor extends BiRequestStreamGrpc.BiRequestSt
             Loggers.REMOTE_DIGEST.error("[{}]Bi stream request error,payload={},error={}", connectionId,
                     grpcRequest.toByteString().toStringUtf8(), throwable);
         }
-        
     }
     
     @Override

@@ -72,7 +72,7 @@ public abstract class BaseGrpcServer extends BaseRpcServer {
     @Override
     public void startServer() throws Exception {
         final MutableHandlerRegistry handlerRegistry = new MutableHandlerRegistry();
-
+        // 注册 ServerServiceDefinition
         addServices(handlerRegistry, getSeverInterceptors().toArray(new ServerInterceptor[0]));
 
         NettyServerBuilder builder = NettyServerBuilder.forPort(getServicePort()).executor(getRpcExecutor());

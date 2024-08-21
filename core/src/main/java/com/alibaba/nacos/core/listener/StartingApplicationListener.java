@@ -126,6 +126,7 @@ public class StartingApplicationListener implements NacosApplicationListener {
     public void started(ConfigurableApplicationContext context) {
         starting = false;
         closeExecutor();
+        // GrpcRequestAcceptor 会判断该数据
         ApplicationUtils.setStarted(true);
         judgeStorageMode(context.getEnvironment());
     }
