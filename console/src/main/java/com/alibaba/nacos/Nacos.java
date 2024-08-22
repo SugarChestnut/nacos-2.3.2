@@ -36,7 +36,7 @@ import org.springframework.scheduling.annotation.EnableScheduling;
  * Use @SpringBootApplication and @ComponentScan at the same time, using CUSTOM type filter to control module enabled.
  * NacosTypeExcludeFilter 通过启动模式，是 config 还是 naming 来确定加载配置中心的类，还是注册中心的类，还是都加载
  * </p>
- *
+ * https://cloud.tencent.com/developer/article/2003008
  * @author nacos
  */
 @EnableAutoConfiguration
