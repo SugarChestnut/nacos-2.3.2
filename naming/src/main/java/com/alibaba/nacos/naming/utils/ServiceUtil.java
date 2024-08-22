@@ -257,6 +257,7 @@ public final class ServiceUtil {
         // The instance list of all filtered by cluster/enabled condition.
         List<com.alibaba.nacos.api.naming.pojo.Instance> allInstances = new LinkedList<>();
         for (com.alibaba.nacos.api.naming.pojo.Instance ip : serviceInfo.getHosts()) {
+            // 服务摘除应该就是控制的这个
             if (checkCluster(clusterSets, ip) && checkEnabled(enableOnly, ip)) {
                 if (!healthyOnly || ip.isHealthy()) {
                     filteredInstances.add(ip);
