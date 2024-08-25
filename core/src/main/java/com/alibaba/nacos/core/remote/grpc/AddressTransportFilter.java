@@ -59,7 +59,6 @@ public class AddressTransportFilter extends ServerTransportFilter {
         Loggers.REMOTE_DIGEST.info("Connection transportReady,connectionId = {} ", connectionId);
 
         return attrWrapper;
-        
     }
     
     @Override
@@ -75,7 +74,5 @@ public class AddressTransportFilter extends ServerTransportFilter {
                     .info("Connection transportTerminated,connectionId = {} ", connectionId);
             connectionManager.unregister(connectionId);
         }
-
-        System.out.println("--- AddressTransportFilter.transportTerminated(" +connectionId + ")");
     }
 }

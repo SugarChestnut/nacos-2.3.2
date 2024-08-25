@@ -39,6 +39,7 @@ public class NacosExecuteTaskExecuteEngine extends AbstractNacosTaskExecuteEngin
     
     public NacosExecuteTaskExecuteEngine(String name, Logger logger, int dispatchWorkerCount) {
         super(logger);
+        // 不超过CPU核数的两倍
         executeWorkers = new TaskExecuteWorker[dispatchWorkerCount];
         for (int mod = 0; mod < dispatchWorkerCount; ++mod) {
             executeWorkers[mod] = new TaskExecuteWorker(name, mod, dispatchWorkerCount, getEngineLog());

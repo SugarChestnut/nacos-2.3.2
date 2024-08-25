@@ -78,6 +78,7 @@ public class GrpcRequestAcceptor extends RequestGrpc.RequestImplBase {
     public void request(Payload grpcRequest, StreamObserver<Payload> responseObserver) {
         traceIfNecessary(grpcRequest, true);
         String type = grpcRequest.getMetadata().getType();
+        System.out.println("request type:" + type);
         long startTime = System.nanoTime();
         
         //server is on starting.
@@ -202,6 +203,7 @@ public class GrpcRequestAcceptor extends RequestGrpc.RequestImplBase {
                 responseObserver.onNext(payloadResponse);
                 responseObserver.onCompleted();
             }
+            // 监控数据
             MetricsMonitor.recordGrpcRequestEvent(type, response.isSuccess(),
                     response.getErrorCode(), null, request.getModule(), System.nanoTime() - startTime);
         } catch (Throwable e) {

@@ -82,7 +82,7 @@ public class GrpcBiStreamRequestAcceptor extends BiRequestStreamGrpc.BiRequestSt
             
             @Override
             public void onNext(Payload payload) {
-                
+                // 客户端IP
                 clientIp = payload.getMetadata().getClientIp();
                 traceDetailIfNecessary(payload);
                 

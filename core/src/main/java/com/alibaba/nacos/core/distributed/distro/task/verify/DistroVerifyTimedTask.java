@@ -54,6 +54,7 @@ public class DistroVerifyTimedTask implements Runnable {
             if (Loggers.DISTRO.isDebugEnabled()) {
                 Loggers.DISTRO.debug("server list is: {}", targetServer);
             }
+            // 默认就一个 DistroClientDataProcessor
             for (String each : distroComponentHolder.getDataStorageTypes()) {
                 verifyForDataStorage(each, targetServer);
             }
@@ -64,6 +65,7 @@ public class DistroVerifyTimedTask implements Runnable {
     
     private void verifyForDataStorage(String type, List<Member> targetServer) {
         DistroDataStorage dataStorage = distroComponentHolder.findDataStorage(type);
+        // 必须等另外一个任务执行后才能改变状态
         if (!dataStorage.isFinishInitial()) {
             Loggers.DISTRO.warn("data storage {} has not finished initial step, do not send verify data",
                     dataStorage.getClass().getSimpleName());

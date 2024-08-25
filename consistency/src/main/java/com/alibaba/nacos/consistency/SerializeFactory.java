@@ -28,7 +28,8 @@ import java.util.Map;
  * @author <a href="mailto:liaochuntao@live.com">liaochuntao</a>
  */
 public class SerializeFactory {
-    
+
+    // 使用 hessian 序列化框架
     public static final String HESSIAN_INDEX = "Hessian".toLowerCase();
     
     private static final Map<String, Serializer> SERIALIZER_MAP = new HashMap<>(4);

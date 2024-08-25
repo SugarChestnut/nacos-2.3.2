@@ -103,7 +103,9 @@ public class DistroClientDataProcessor extends SmartSubscriber implements Distro
     }
     
     private void syncToVerifyFailedServer(ClientEvent.ClientVerifyFailedEvent event) {
+        // 实例客户端
         Client client = clientManager.getClient(event.getClientId());
+        // 只有临时实例才需要同步到其他节点
         if (isInvalidClient(client)) {
             return;
         }
