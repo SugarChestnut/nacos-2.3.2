@@ -177,8 +177,10 @@ public class DistroClientDataProcessor extends SmartSubscriber implements Distro
         
         for (int i = 0; i < namespaces.size(); i++) {
             Service service = Service.newService(namespaces.get(i), groupNames.get(i), serviceNames.get(i));
+            // 如果存在，获取原数据，不存在则保存
             Service singleton = ServiceManager.getInstance().getSingleton(service);
             syncedService.add(singleton);
+            // 实例信息
             InstancePublishInfo instancePublishInfo = instances.get(i);
             if (!instancePublishInfo.equals(client.getInstancePublishInfo(singleton))) {
                 client.addServiceInstance(singleton, instancePublishInfo);
@@ -188,6 +190,7 @@ public class DistroClientDataProcessor extends SmartSubscriber implements Distro
                         new MetadataEvent.InstanceMetadataEvent(singleton, instancePublishInfo.getMetadataId(), false));
             }
         }
+        // 移除不存在的 service
         for (Service each : client.getAllPublishedService()) {
             if (!syncedService.contains(each)) {
                 client.removeServiceInstance(each);
