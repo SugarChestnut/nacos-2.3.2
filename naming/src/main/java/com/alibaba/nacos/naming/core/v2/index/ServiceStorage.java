@@ -84,6 +84,7 @@ public class ServiceStorage {
             return result;
         }
         Service singleton = ServiceManager.getInstance().getSingleton(service);
+        // 获取该服务的所有实例
         result.setHosts(getAllInstancesFromIndex(singleton));
         serviceDataIndexes.put(singleton, result);
         return result;
@@ -106,7 +107,9 @@ public class ServiceStorage {
     private List<Instance> getAllInstancesFromIndex(Service service) {
         Set<Instance> result = new HashSet<>();
         Set<String> clusters = new HashSet<>();
+        // 获取服务对应的客户端
         for (String each : serviceIndexesManager.getAllClientsRegisteredService(service)) {
+            // 一个客户端可能会向不同的namespace、group注册
             Optional<InstancePublishInfo> instancePublishInfo = getInstanceInfo(each, service);
             if (instancePublishInfo.isPresent()) {
                 InstancePublishInfo publishInfo = instancePublishInfo.get();
@@ -153,6 +156,7 @@ public class ServiceStorage {
     }
     
     private Instance parseInstance(Service service, InstancePublishInfo instanceInfo) {
+        // 构建 Instance
         Instance result = InstanceUtil.parseToApiInstance(service, instanceInfo);
         Optional<InstanceMetadata> metadata = metadataManager
                 .getInstanceMetadata(service, instanceInfo.getMetadataId());
