@@ -61,6 +61,7 @@ public class DistroLoadDataTask implements Runnable {
     public void run() {
         try {
             load();
+            // 如果不成功，会反复一直执行
             if (!checkCompleted()) {
                 GlobalExecutor.submitLoadDataTask(this, distroConfig.getLoadDataRetryDelayMillis());
             } else {
