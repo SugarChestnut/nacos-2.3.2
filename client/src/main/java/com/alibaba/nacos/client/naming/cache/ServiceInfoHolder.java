@@ -63,6 +63,7 @@ public class ServiceInfoHolder implements Closeable {
     public ServiceInfoHolder(String namespace, String notifierEventScope, NacosClientProperties properties) {
         cacheDir = CacheDirUtil.initCacheDir(namespace, properties);
         if (isLoadCacheAtStart(properties)) {
+            // 但是也没有更新 redo，那么获取实例的时候，还是会向远程请求
             this.serviceInfoMap = new ConcurrentHashMap<>(DiskCache.read(this.cacheDir));
         } else {
             this.serviceInfoMap = new ConcurrentHashMap<>(16);

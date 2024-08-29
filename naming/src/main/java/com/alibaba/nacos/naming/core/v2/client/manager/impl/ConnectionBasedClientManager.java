@@ -103,6 +103,7 @@ public class ConnectionBasedClientManager extends ClientConnectionEventListener 
             return true;
         }
         client.release();
+        // 是否负责管理这个客户端
         boolean isResponsible = isResponsibleClient(client);
         NotifyCenter.publishEvent(new ClientOperationEvent.ClientReleaseEvent(client, isResponsible));
         NotifyCenter.publishEvent(new ClientEvent.ClientDisconnectEvent(client, isResponsible));

@@ -276,6 +276,7 @@ public abstract class GrpcClient extends RpcClient {
                                 setupRequestHandler.requestReply(request, null);
                                 return;
                             }
+                            // 处理服务端请求
                             Response response = handleServerRequest(request);
                             if (response != null) {
                                 response.setRequestId(request.getRequestId());
