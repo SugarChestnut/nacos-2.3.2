@@ -58,7 +58,7 @@ public class DumpAllProcessor implements NacosTaskProcessor {
             return false;
         }
         DumpAllTask dumpAllTask = (DumpAllTask) task;
-        
+        // 获取configInfo最大的Id
         long currentMaxId = configInfoPersistService.findConfigMaxId();
         long lastMaxId = 0;
         ThreadPoolExecutor executorService = null;
@@ -106,14 +106,15 @@ public class DumpAllProcessor implements NacosTaskProcessor {
                 if (cf == null) {
                     continue;
                 }
+                // 地址白名单
                 if (cf.getDataId().equals(AggrWhitelist.AGGRIDS_METADATA)) {
                     AggrWhitelist.load(cf.getContent());
                 }
-                
+                // IP白名单
                 if (cf.getDataId().equals(ClientIpWhiteList.CLIENT_IP_WHITELIST_METADATA)) {
                     ClientIpWhiteList.load(cf.getContent());
                 }
-                
+                // 元数据信息
                 if (cf.getDataId().equals(SwitchService.SWITCH_META_DATA_ID)) {
                     SwitchService.load(cf.getContent());
                 }

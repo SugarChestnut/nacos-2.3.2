@@ -230,7 +230,7 @@ public class LongPollingService {
     @SuppressWarnings("PMD.ThreadPoolCreationRule")
     public LongPollingService() {
         allSubs = new ConcurrentLinkedQueue<>();
-        
+        // 每隔10s执行一次，监控数据
         ConfigExecutor.scheduleLongPolling(new StatTask(), 0L, 10L, TimeUnit.SECONDS);
         
         // Register LocalDataChangeEvent to NotifyCenter.
@@ -245,7 +245,6 @@ public class LongPollingService {
                     LocalDataChangeEvent evt = (LocalDataChangeEvent) event;
                     ConfigExecutor.executeLongPolling(new DataChangeTask(evt.groupKey, evt.isBeta, evt.betaIps));
                 }
-                
             }
             
             @Override
@@ -253,7 +252,6 @@ public class LongPollingService {
                 return LocalDataChangeEvent.class;
             }
         });
-        
     }
     
     public static final String LONG_POLLING_HEADER = "Long-Pulling-Timeout";

@@ -1182,6 +1182,7 @@ public class ClientWorker implements Closeable {
                 configResponse.setEncryptedDataKey(encryptedDataKey);
                 return configResponse;
             } else if (response.getErrorCode() == ConfigQueryResponse.CONFIG_NOT_FOUND) {
+                // 删除零时文件
                 LocalConfigInfoProcessor.saveSnapshot(this.getName(), dataId, group, tenant, null);
                 LocalEncryptedDataKeyProcessor.saveEncryptDataKeySnapshot(agent.getName(), dataId, group, tenant, null);
                 return configResponse;

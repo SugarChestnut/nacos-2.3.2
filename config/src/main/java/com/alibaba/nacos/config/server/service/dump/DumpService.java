@@ -278,6 +278,7 @@ public abstract class DumpService {
                 }
                 
                 // add to dump aggr
+                // 获取租户信息 data_id, group_id, tenant_id
                 List<ConfigInfoChanged> configList = configInfoAggrPersistService.findAllAggrGroup();
                 if (configList != null && !configList.isEmpty()) {
                     total = configList.size();

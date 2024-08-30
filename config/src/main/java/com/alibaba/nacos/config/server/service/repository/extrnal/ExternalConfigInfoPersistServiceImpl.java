@@ -555,6 +555,7 @@ public class ExternalConfigInfoPersistServiceImpl implements ConfigInfoPersistSe
             final String srcUser, final Map<String, Object> configAdvanceInfo) {
         return tjt.execute(status -> {
             try {
+                // 查找
                 ConfigInfo oldConfigInfo = findConfigInfo(configInfo.getDataId(), configInfo.getGroup(),
                         configInfo.getTenant());
                 if (oldConfigInfo == null) {
@@ -587,6 +588,7 @@ public class ExternalConfigInfoPersistServiceImpl implements ConfigInfoPersistSe
                 
                 historyConfigInfoPersistService.insertConfigHistoryAtomic(oldConfigInfo.getId(), oldConfigInfo, srcIp,
                         srcUser, now, "U");
+                // 再次查找
                 ConfigInfoStateWrapper configInfoLast = this.findConfigInfoState(configInfo.getDataId(),
                         configInfo.getGroup(), configInfo.getTenant());
                 if (configInfoLast == null) {

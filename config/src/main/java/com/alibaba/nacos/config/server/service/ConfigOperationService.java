@@ -97,9 +97,12 @@ public class ConfigOperationService {
         ConfigOperateResult configOperateResult;
         
         String persistEvent = ConfigTraceService.PERSISTENCE_EVENT;
-        
+
+        // 灰度IP
         if (StringUtils.isBlank(configRequestInfo.getBetaIps())) {
+            // 标签
             if (StringUtils.isBlank(configForm.getTag())) {
+                // 根据MD5更新
                 if (StringUtils.isNotBlank(configRequestInfo.getCasMd5())) {
                     configOperateResult = configInfoPersistService.insertOrUpdateCas(configRequestInfo.getSrcIp(),
                             configForm.getSrcUser(), configInfo, configAdvanceInfo);
@@ -111,7 +114,7 @@ public class ConfigOperationService {
                                 ErrorCode.RESOURCE_CONFLICT, "Cas publish fail, server md5 may have changed.");
                     }
                 } else {
-                    // 一般情况下走的这个逻辑，插入数据库
+                    // 一般情况下走的这个逻辑，新增或修改数据库
                     configOperateResult = configInfoPersistService.insertOrUpdate(configRequestInfo.getSrcIp(),
                             configForm.getSrcUser(), configInfo, configAdvanceInfo);
                 }

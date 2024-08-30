@@ -76,14 +76,17 @@ public class ConfigQueryRequestHandler extends RequestHandler<ConfigQueryRequest
         String group = configQueryRequest.getGroup();
         String tenant = configQueryRequest.getTenant();
         String clientIp = meta.getClientIp();
+        // null
         String tag = configQueryRequest.getTag();
         
         String groupKey = GroupKey2.getKey(configQueryRequest.getDataId(), configQueryRequest.getGroup(),
                 configQueryRequest.getTenant());
+        // null
         String autoTag = configQueryRequest.getHeader(com.alibaba.nacos.api.common.Constants.VIPSERVER_TAG);
+        // unknown
         String requestIpApp = meta.getLabels().get(CLIENT_APPNAME_HEADER);
         String acceptCharset = ENCODE_UTF8;
-        
+        // 加锁
         int lockResult = ConfigCacheService.tryConfigReadLock(groupKey);
         String pullEvent = ConfigTraceService.PULL_EVENT;
         String pullType = ConfigTraceService.PULL_TYPE_OK;

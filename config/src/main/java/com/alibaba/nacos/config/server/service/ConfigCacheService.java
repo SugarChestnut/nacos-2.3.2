@@ -84,7 +84,7 @@ public class ConfigCacheService {
         CacheItem ci = makeSure(groupKey, encryptedDataKey);
         ci.setType(type);
         final int lockResult = tryWriteLock(groupKey);
-        
+        // 获取锁
         if (lockResult < 0) {
             DUMP_LOG.warn("[dump-error] write lock failed. {}", groupKey);
             return false;
@@ -93,6 +93,7 @@ public class ConfigCacheService {
         try {
             
             //check timestamp
+            // 数据库的更新时间小于本地更新时间
             boolean lastModifiedOutDated = lastModifiedTs < ConfigCacheService.getLastModifiedTs(groupKey);
             if (lastModifiedOutDated) {
                 DUMP_LOG.warn("[dump-ignore] timestamp is outdated,groupKey={}", groupKey);
