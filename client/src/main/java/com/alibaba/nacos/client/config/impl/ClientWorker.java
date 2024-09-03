@@ -399,6 +399,7 @@ public class ClientWorker implements Closeable {
                 cache.setInitializing(true);
             } else {
                 cache = new CacheData(configFilterChainManager, agent.getName(), dataId, group, tenant);
+                // 前3000个都为0
                 int taskId = calculateTaskId();
                 increaseTaskIdCount(taskId);
                 cache.setTaskId(taskId);
@@ -444,6 +445,7 @@ public class ClientWorker implements Closeable {
     }
     
     private int calculateTaskId() {
+        // 每个client管理的配置数
         int perTaskSize = (int) ParamUtil.getPerTaskConfigSize();
         for (int index = 0; index < taskIdCacheCountList.size(); index++) {
             if (taskIdCacheCountList.get(index).get() < perTaskSize) {
@@ -812,13 +814,15 @@ public class ClientWorker implements Closeable {
             // 当添加监听器的时候才不为空
             for (CacheData cache : cacheMap.get().values()) {
                 synchronized (cache) {
-                    // 检查本地配置
+                    // 检查本地磁盘文件检查
                     checkLocalConfig(cache);
                     
                     // check local listeners consistent.
-                    //
+                    // 判断配置是否跟配置中心同步
                     if (cache.isConsistentWithServer()) {
+                        // 每一次变化都会触发一次监听器，也就是说，每次配置同步之后，会触发一次监听器
                         cache.checkListenerMd5();
+                        //  全量同步
                         if (!needAllSync) {
                             continue;
                         }
@@ -848,11 +852,11 @@ public class ClientWorker implements Closeable {
             //execute check remove listen.
             checkRemoveListenCache(removeListenCachesMap);
 
-            // ? 聊胜于无？
             if (needAllSync) {
                 lastAllSyncTime = now;
             }
             //If has changed keys,notify re sync md5.
+            // 是否有配置变化，立马再次提交队列，那么前面的配置MD5检查就会触发监听器
             if (hasChangedKeys) {
                 notifyListenConfig();
             }
@@ -1010,7 +1014,7 @@ public class ClientWorker implements Closeable {
                     Future future = executorService.submit(() -> {
                         List<CacheData> listenCaches = entry.getValue();
                         //reset notify change flag.
-                        // 重置初始化
+                        // 重置服务端提交标志
                         for (CacheData cacheData : listenCaches) {
                             cacheData.getReceiveNotifyChanged().set(false);
                         }
@@ -1033,8 +1037,10 @@ public class ClientWorker implements Closeable {
                                         refreshContentAndCheck(rpcClient, changeKey, !isInitializing);
                                     }
                                 }
-                                // 什么时候状态才会变呢？
+
+                                // 感觉是多余的，在上面就已经完成了配置请求
                                 for (CacheData cacheData : listenCaches) {
+                                    // 接收到服务端的配置变化通知
                                     if (cacheData.getReceiveNotifyChanged().get()) {
                                         String changeKey = GroupKey.getKeyTenant(cacheData.dataId, cacheData.group,
                                                 cacheData.getTenant());
@@ -1143,9 +1149,8 @@ public class ClientWorker implements Closeable {
         @Override
         public ConfigResponse queryConfig(String dataId, String group, String tenant, long readTimeouts, boolean notify)
                 throws NacosException {
-            //
             RpcClient rpcClient = getOneRunningClient();
-            // 应该跟监听器相关
+            // 应该跟监听器相关，就前面来说，没啥区别
             if (notify) {
                 // key = dataId + '+' + group + '+' + tenant
                 CacheData cacheData = cacheMap.get().get(GroupKey.getKeyTenant(dataId, group, tenant));

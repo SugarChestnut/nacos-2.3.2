@@ -111,7 +111,7 @@ public class JRaftServer {
     
     private CliService cliService;
     
-    // Ordinary member variable
+    // Ordinary member variable 原始成员变量
     private Map<String, RaftGroupTuple> multiRaftGroup = new ConcurrentHashMap<>();
     
     private volatile boolean isStarted = false;
@@ -451,6 +451,7 @@ public class JRaftServer {
     
     boolean peerChange(JRaftMaintainService maintainService, Set<String> newPeers) {
         // This is only dealing with node deletion, the Raft protocol, where the node adds itself to the cluster when it starts up
+        // 判断自身节点时候已经启动，且加入到了集群中
         Set<String> oldPeers = new HashSet<>(this.raftConfig.getMembers());
         this.raftConfig.setMembers(localPeerId.toString(), newPeers);
         oldPeers.removeAll(newPeers);
