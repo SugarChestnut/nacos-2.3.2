@@ -71,7 +71,6 @@ public class GrpcRequestAcceptor extends RequestGrpc.RequestImplBase {
             Loggers.REMOTE_DIGEST.error("[{}]Monitor request error,payload={},error={}", connectionId, clientIp,
                     grpcRequest.toByteString().toStringUtf8());
         }
-        
     }
     
     @Override
@@ -121,6 +120,7 @@ public class GrpcRequestAcceptor extends RequestGrpc.RequestImplBase {
         
         //check connection status.
         String connectionId = GrpcServerConstants.CONTEXT_KEY_CONN_ID.get();
+        // 连接是否存在
         boolean requestValid = connectionManager.checkValid(connectionId);
         if (!requestValid) {
             Loggers.REMOTE_DIGEST

@@ -74,7 +74,7 @@ public class SubscribeServiceRequestHandler extends RequestHandler<SubscribeServ
         String groupedServiceName = NamingUtils.getGroupedName(serviceName, groupName);
         // 被订阅的服务
         Service service = Service.newService(namespaceId, groupName, serviceName, true);
-        // 要订阅的
+        // 订阅
         Subscriber subscriber = new Subscriber(meta.getClientIp(), meta.getClientVersion(), app, meta.getClientIp(),
                 namespaceId, groupedServiceName, 0, request.getClusters());
         ServiceInfo serviceInfo = ServiceUtil.selectInstancesWithHealthyProtection(serviceStorage.getData(service),

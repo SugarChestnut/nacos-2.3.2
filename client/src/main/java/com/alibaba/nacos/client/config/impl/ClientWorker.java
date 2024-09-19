@@ -691,6 +691,7 @@ public class ClientWorker implements Closeable {
         private void initRpcClientHandler(final RpcClient rpcClientInner) {
             /*
              * Register Config Change /Config ReSync Handler
+             * 处理配置中心配置变更请求
              */
             rpcClientInner.registerServerRequestHandler((request, connection) -> {
                 if (request instanceof ConfigChangeNotifyRequest) {
@@ -699,7 +700,8 @@ public class ClientWorker implements Closeable {
                 }
                 return null;
             });
-            
+
+            // 客户端监控数据请求
             rpcClientInner.registerServerRequestHandler((request, connection) -> {
                 if (request instanceof ClientConfigMetricRequest) {
                     return handleClientMetricsRequest((ClientConfigMetricRequest) request);

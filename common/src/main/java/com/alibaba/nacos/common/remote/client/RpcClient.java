@@ -273,8 +273,9 @@ public abstract class RpcClient implements Closeable {
                     ReconnectContext reconnectContext = reconnectionSignal
                             .poll(rpcClientConfig.connectionKeepAlive(), TimeUnit.MILLISECONDS);
                     if (reconnectContext == null) {
-                        // check alive time.
+                        // check alive time. 5s
                         if (System.currentTimeMillis() - lastActiveTimeStamp >= rpcClientConfig.connectionKeepAlive()) {
+                            // 健康检查是否成功
                             boolean isHealthy = healthCheck();
                             if (!isHealthy) {
                                 if (currentConnection == null) {
@@ -303,7 +304,6 @@ public abstract class RpcClient implements Closeable {
                         } else {
                             continue;
                         }
-                        
                     }
                     
                     if (reconnectContext.serverInfo != null) {
@@ -370,6 +370,7 @@ public abstract class RpcClient implements Closeable {
         registerServerRequestHandler(new ConnectResetRequestHandler());
         
         // register client detection request.
+        // 服务端检测客户端】
         registerServerRequestHandler((request, connection) -> {
             if (request instanceof ClientDetectionRequest) {
                 return new ClientDetectionResponse();
