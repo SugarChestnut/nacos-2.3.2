@@ -73,6 +73,7 @@ public class PersistentInstanceRequestHandler extends RequestHandler<PersistentI
     
     private InstanceResponse registerInstance(Service service, PersistentInstanceRequest request, RequestMeta meta) {
         Instance instance = request.getInstance();
+        // clientId = ip:port#false
         String clientId = IpPortBasedClient.getClientId(instance.toInetAddr(), false);
         clientOperationService.registerInstance(service, instance, clientId);
         NotifyCenter.publishEvent(new RegisterInstanceTraceEvent(System.currentTimeMillis(), meta.getClientIp(), true,

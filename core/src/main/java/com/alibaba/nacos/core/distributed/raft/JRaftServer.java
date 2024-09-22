@@ -328,6 +328,7 @@ public class JRaftServer {
         
         final Node node = tuple.node;
         if (node.isLeader()) {
+            // 当前节点是leader
             // The leader node directly applies this request
             applyOperation(node, data, closure);
         } else {
